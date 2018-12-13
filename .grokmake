@@ -13,13 +13,23 @@ project(reactor)
 set(CMAKE_CXX_STANDARD "17")
 set(CMAKE_CXX_FLAGS -pthread)
 
-add_executable(reactor examples/main.cpp)
+add_executable(reactor example/main.cpp)
 
 # ==========: reactor :==========
 # - includes:
 include_directories("/home/nick/Projects/fyrware/reactor/.")
 # - libraries
 target_link_libraries(reactor)
+
+#                                _
+#                               //
+#       ____    ____   ____    //
+#      //  \\  //  \\ //  \\  //___
+#     //   // //     //   // //\\
+#    //   // //     //   // //  \\
+#    \\__// //      \\__// //    \\
+#       //  PACKAGE MANAGER
+#  \\__//
 
 # ==========: fusion :==========
 # - includes:

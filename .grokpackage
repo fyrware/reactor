@@ -8,7 +8,7 @@
     "libraries": {},
     "package": {
         "executables": [
-            "examples/main.cpp"
+            "example/main.cpp"
         ],
         "flags": [
             "pthread"
