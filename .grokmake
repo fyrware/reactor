@@ -1,37 +1,16 @@
-#                                _
-#                               //
-#       ____    ____   ____    //
-#      //  \\  //  \\ //  \\  //___
-#     //   // //     //   // //\\
-#    //   // //     //   // //  \\
-#    \\__// //      \\__// //    \\
-#       //  PACKAGE MANAGER
-#  \\__//
+# ========: generated cmake :========
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_FLAGS -pthread)
 
 project(reactor)
 
-set(CMAKE_CXX_STANDARD "17")
-set(CMAKE_CXX_FLAGS -pthread)
-
 add_executable(reactor example/main.cpp)
 
-# ==========: reactor :==========
+# ========: reactor :========
 # - includes:
-include_directories("/home/nick/Projects/fyrware/reactor/.")
-# - libraries
-target_link_libraries(reactor)
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/.")
 
-#                                _
-#                               //
-#       ____    ____   ____    //
-#      //  \\  //  \\ //  \\  //___
-#     //   // //     //   // //\\
-#    //   // //     //   // //  \\
-#    \\__// //      \\__// //    \\
-#       //  PACKAGE MANAGER
-#  \\__//
-
-# ==========: fusion :==========
+# ========: fusion :========
 # - includes:
-include_directories("/home/nick/Projects/fyrware/reactor/.grok/fusion/.")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/.grok/fusion/.")
 

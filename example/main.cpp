@@ -1,48 +1,37 @@
 # include <iostream>
 # include <thread>
 
-# include "fusion/executor.cpp"
 # include "reactor/core.cpp"
 # include "reactor/event.cpp"
+# include "reactor/system.cpp"
 
 namespace example {
 
-    void instruction (reactor::core& application) {
-        application.observe("start").for_each([ & ] (reactor::event* event) {
-            std::cout << "[ " << std::this_thread::get_id() << " ] " << "application has started" << std::endl;
-            application.emit("foo", new reactor::event("foo"));
+    void instruction (reactor::core& core) {
+        std::cout << "[ " << std::this_thread::get_id() << " ] " << "instruction" << std::endl;
+
+        core.observe("connect").for_each([ & ] (reactor::event* event) {
+            std::cout << "[ " << std::this_thread::get_id() << " ] " << "connect" << std::endl;
+
+            core.abort();
         });
 
-        application.observe("shutdown").for_each([ & ] (reactor::event* event) {
-            std::cout << "[ " << std::this_thread::get_id() << " ] " << "application has shut down 1" << std::endl;
-        });
-
-        application.observe("shutdown").for_each([ & ] (reactor::event* event) {
-            std::cout << "[ " << std::this_thread::get_id() << " ] " << "application has shut down 2" << std::endl;
-        });
-
-        application.observe("shutdown").for_each([ & ] (reactor::event* event) {
-            std::cout << "[ " << std::this_thread::get_id() << " ] " << "application has shut down 3" << std::endl;
-        });
-
-        application.observe("foo").for_each([ & ] (reactor::event* event) {
-            std::cout << "[ " << std::this_thread::get_id() << " ] " << "foo" << std::endl;
-            application.shutdown(0);
+        core.observe("abort").for_each([ & ] (reactor::event* event) {
+            std::cout << "[ " << std::this_thread::get_id() << " ] " << "abort" << std::endl;
         });
     }
 
     int main () {
-        fusion::executor thread_pool(3);
-        reactor::core application({ instruction });
+        reactor::core foo({ instruction }, 3);
+        reactor::core bar({ instruction }, 3);
+        reactor::core baz({ instruction }, 3);
 
-        application.start(thread_pool);
+        reactor::system app({ foo, bar, baz });
 
-        while (application.running());
+        app.run();
 
-        thread_pool.terminate();
-        thread_pool.flush();
-
-        return application.status();
+        while (app.running());
+        return app.status();
     }
 }
 

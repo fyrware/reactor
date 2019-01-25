@@ -2,20 +2,20 @@
     "dependencies": {
         "fusion": "master"
     },
+    "flags": {
+        "pthread": ""
+    },
     "includes": [
         "."
     ],
     "libraries": {},
     "package": {
-        "executables": [
-            "example/main.cpp"
-        ],
-        "flags": [
-            "pthread"
-        ],
+        "address": "https://github.com/fyrware/reactor.git",
         "name": "reactor",
         "release": "master",
-        "repository": "https://github.com/fyrware/reactor.git",
         "standard": "17"
-    }
+    },
+    "sources": [
+        "example/main.cpp"
+    ]
 }
