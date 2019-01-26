@@ -17,24 +17,22 @@ namespace reactor {
     class core {
 
         private:
-            fusion::emitter<reactor::event*>* core_emitter;
-            fusion::executor* core_executor;
+            std::unique_ptr<fusion::emitter<reactor::event*>> core_emitter;
+            std::unique_ptr<fusion::executor> core_executor;
             std::vector<std::function<void(core&)>> core_instructions;
             bool core_running;
             int core_status;
 
         public:
-            explicit core (const std::vector<std::function<void(core&)>>& instructions = { }, int thread_count = 0) {
-                core_emitter = new fusion::emitter<reactor::event*>();
-                core_executor = new fusion::executor(thread_count);
-                core_instructions = instructions;
+            explicit core (std::vector<std::function<void(core&)>> instructions = { }, int thread_count = 0) : core_emitter(new fusion::emitter<reactor::event*>()), core_executor(new fusion::executor(thread_count)) {
+                core_instructions = std::move(instructions);
                 core_running = false;
                 core_status = 0;
             }
 
             core (const core& copy) {
-                core_emitter = copy.core_emitter;
-                core_executor = copy.core_executor;
+                core_emitter = std::move(const_cast<core&>(copy).core_emitter);
+                core_executor = std::move(const_cast<core&>(copy).core_executor);
                 core_instructions = copy.core_instructions;
                 core_running = copy.core_running;
                 core_status = copy.core_status;
@@ -60,13 +58,15 @@ namespace reactor {
 
                 emit("abort", new event("abort"));
 
+                core_executor->flush();
+
                 return core_status;
             }
 
             void connect () {
                 core_running = true;
 
-                for (const std::function<void(core&)>& instruction : core_instructions) {
+                for (std::function<void(core&)>& instruction : core_instructions) {
                     instruction(*this);
                 }
 

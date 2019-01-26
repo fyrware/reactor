@@ -22,11 +22,11 @@ namespace example {
     }
 
     int main () {
-        reactor::core foo({ instruction }, 3);
-        reactor::core bar({ instruction }, 3);
-        reactor::core baz({ instruction }, 3);
-
-        reactor::system app({ foo, bar, baz });
+        reactor::system app({
+            reactor::core({ instruction }, 3),
+            reactor::core({ instruction }, 3),
+            reactor::core({ instruction }, 3)
+        });
 
         app.run();
 

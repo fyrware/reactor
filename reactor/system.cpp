@@ -19,7 +19,9 @@ namespace reactor {
             std::vector<reactor::core> system_cores;
 
         public:
-            explicit system (std::vector<reactor::core> cores) : system_cores(std::move(cores)) { }
+            explicit system (std::vector<reactor::core> cores) {
+                system_cores = std::move(cores);
+            }
 
             ~ system () {
                 for (reactor::core& core : system_cores) if (core.running()) {
